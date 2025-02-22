@@ -3,8 +3,8 @@
 This repository contains an implementation of the paper [Learning Kernel Parameters for Support Vector Classification Using Similarity Embeddings](https://www.esann.org/sites/default/files/proceedings/2024/ES2024-90.pdf), presented in ESANN 24. It consists of a similarity-based approach for optimizing the width parameter (sigma) in radial basis function (RBF) kernels.
 
 Supported kernel types are:
-- Gaussian kernel: $K(x_i, x_j) = \exp\left(-\frac{1}{2} ||x_i - x_j||**2 / \sigma**2\right)$.
-- Laplacian kernel: $K(x_i, x_j) = \exp\left(- \frac{1}{2}||x_i - x_j|| / \sigma\right)$.
+- Gaussian kernel: $K(x_i, x_j) = \exp\left(-\frac{1}{2}\frac{||x_i - x_j||**2}{\sigma**2}\right)$.
+- Laplacian kernel: $K(x_i, x_j) = \exp\left(-\frac{1}{2}\frac{||x_i - x_j||}{\sigma}\right)$.
 
 ## Files
 
