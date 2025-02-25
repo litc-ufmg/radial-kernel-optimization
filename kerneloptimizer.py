@@ -1,6 +1,6 @@
 import numpy as np
 
-from scipy.optimize import minimize
+from scipy.optimize import minimize_scalar
 from scipy.spatial import distance_matrix
 
 
@@ -72,6 +72,7 @@ def similarity_distance_loss(X, y, sigma, kernel="gaussian"):
     if sigma == 0.:
         return 0.
 
+    classes = sorted(np.unique(y))
     similarities = generate_similarity_space(X, y, sigma, kernel)
     mean_sims = np.array([
         similarities[
@@ -84,7 +85,7 @@ def similarity_distance_loss(X, y, sigma, kernel="gaussian"):
     ).sum()
 
 
-def optimize_width(X, y):
+def optimize_width(X, y, kernel="gaussian"):
     """
     Optimize the sigma (bwidth) parameter for the RBF kernel to minimize
     the similarity distance loss.
@@ -94,13 +95,15 @@ def optimize_width(X, y):
         The input data points.
     y : ndarray of shape (n_samples,)
         The class labels corresponding to each data point.
+    kernel : str, optional (default="gaussian")
+        The kernel function to use. Options are "gaussian" or "laplacian".
 
     Returns:
     float
         The optimal value of sigma found by the optimizer.
     """
-    def fun(sigma): return rbf_loss(
-        X, y, sigma
+    def fun(sigma): return similarity_distance_loss(
+        X, y, sigma, kernel=kernel
     )
-    result = minimize(fun, x0=.01)
-    return result['x']
+    result = minimize_scalar(fun)
+    return result.x
